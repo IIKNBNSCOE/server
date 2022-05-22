@@ -14,5 +14,5 @@ app.use('/user',urouter)
 app.use('/ticket',trouter)
 app.listen(process.env.PORT||7000,(req,res)=>
 {
-    console.log("Server started at port 7000")
+    console.log("Server started at port 7000 , You may connect")
 })
