@@ -30,6 +30,6 @@ jobs:
         run: |
           docker build -t serverapp .
           docker tag serverapp imrankazi90/tserver
-          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
+          docker login -u imrankazi90 -p dece19f3-8c70-4277-9bfe-68fc004bdff9
           docker push imrankazi90/tserver
           
