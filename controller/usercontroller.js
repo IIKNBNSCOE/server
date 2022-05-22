@@ -19,7 +19,7 @@ var login=(req,res)=>
             {
            if(req.body.password === doc.password)
            {
-            const token=jwt.sign({id:doc._id},process.env.JWT_SECRET_KEY,{expiresIn:"3600s"})
+            const token=jwt.sign({id:doc._id},process.env.JWT_SECRET_KEY,{expiresIn:"60s"})
             res.status(200).json({message:"Valid User",token:token});                   
            }
            else
