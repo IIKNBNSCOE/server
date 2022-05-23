@@ -57,13 +57,21 @@ jobs:
           SSH_KEY: ${{ secrets.ACTION_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.HOSTNAME }}
           
-      - name: Pull Docker Image and Run on AWS EC2 server
-        run: |
-          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
-          docker pull ${{secrets.DOCKER_USER}}/tserver
-          docker stop serverc
-          docker rm serverc
-          docker run --name serverc -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
+              
+      - name: Docker Login
+        run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
+        
+      - name: Pull From Dockerhub
+        run: docker pull ${{secrets.DOCKER_USER}}/tserver
+        
+      - name: Stop Container
+        run: docker stop serverc
+      
+      - name: remove container
+        run: docker rm serverc
+        
+      - name: Run image in container
+        run: docker run --name serverc -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
             
           
         
