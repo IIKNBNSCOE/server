@@ -40,15 +40,25 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy in EC2
-        env:
-            PRIVATE_KEY: ${{ secrets.ACTION_PRIVATE_KEY  }}
-            HOSTNAME : ${{ secrets.HOSTNAME }}
-            USER_NAME : ${{ secrets.USERNAME }}
-
+      - name: Configure SSH
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.USERNAME }}
+          SSH_KEY: ${{ secrets.ACTION_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.HOSTNAME }}
+          
+      - name: Pull Docker Image and Run on EC2
+        run: |
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
           docker pull ${{secrets.DOCKER_USER}}/tserver
           docker stop serverc1
