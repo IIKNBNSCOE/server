@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-     - name: Pulling Dockerhub image and running on AWS EC2
+     - name: Pulling Dockerhub image and running on AWS EC2 bhy
        uses: appleboy/ssh-action@master
        with:
         host: ${{ secrets.HOSTNAME }}
