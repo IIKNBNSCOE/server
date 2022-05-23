@@ -40,7 +40,7 @@ jobs:
           name: id_rsa
           known_hosts: ec2-18-132-40-163.eu-west-2.compute.amazonaws.com
       - name: ssh
-        run: ssh ec2-user@ec2-18-132-40-163.eu-west-2.compute.amazonaws.com
+        run: ssh -tt ec2-user@ec2-18-132-40-163.eu-west-2.compute.amazonaws.com
       - name: DockerHub Pull and Run on AWS
         run: |
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
