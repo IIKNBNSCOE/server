@@ -34,7 +34,7 @@ jobs:
           docker push imrankazi90/tserver
           
       - name: Install SSH key
-        uses: imrankazi/ssh-key-action@v2
+        uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.ACTION_PRIVATE_KEY }}
           name: id_rsa
