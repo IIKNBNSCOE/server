@@ -57,7 +57,7 @@ jobs:
           SSH_KEY: ${{ secrets.ACTION_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.HOSTNAME }}
           
-      - name: Pull Docker Image and Run on EC2
+      - name: Pull Docker Image and Run on AWS EC2 server
         run: |
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
           docker pull ${{secrets.DOCKER_USER}}/tserver
