@@ -13,7 +13,7 @@ var login=(req,res)=>
         else{
             if(!doc)
             {
-                res.status(200).json({message:"User does not exists"})
+                res.status(200).json({message:"User not exists"})
             }
             else
             {
