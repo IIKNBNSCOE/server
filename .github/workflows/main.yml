@@ -30,6 +30,29 @@ jobs:
         run: |
           docker build -t serverapp .
           docker tag serverapp imrankazi90/tserver
-          docker login -u imrankazi90 -p dece19f3-8c70-4277-9bfe-68fc004bdff9
+          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
           docker push imrankazi90/tserver
+          
+      
+  Deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+     - name: Pulling Dockerhub image and running on AWS EC2 server
+       uses: appleboy/ssh-action@master
+       with:
+        host: ${{ secrets.HOSTNAME }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.ACTION_PRIVATE_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
+          docker pull ${{secrets.DOCKER_USER}}/tserver
+          docker stop serverc
+          docker rm serverc
+          docker run --name serverc -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
+            
+          
+        
           
