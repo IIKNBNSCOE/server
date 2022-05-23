@@ -32,4 +32,18 @@ jobs:
           docker tag serverapp imrankazi90/tserver
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
           docker push imrankazi90/tserver
+      - name: DockerHub Pull and Run on AWS
+        with: 
+          host: ec2-18-132-40-163.eu-west-2.compute.amazonaws.com
+          username: ec2-user
+          key: ${{secrets.ACTION_PRIVATE_KEY}}
+          script: |
+            docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
+            docker pull ${{secrets.DOCKER_USER}}/tserver
+            docker stop serverc1
+            docker rm serverc1
+            docker run --name serverc1 -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
+            
+          
+        
           
