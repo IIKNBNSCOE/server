@@ -39,39 +39,19 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
-      - name: Configure SSH
-        run: |
-          cd ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/authorized_keys
-          chmod 600 ~/.ssh/authorized_keys
-          cat >>~/.ssh/config <<END
-          Host staging
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/authorized_keys
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: ${{ secrets.USERNAME }}
-          SSH_KEY: ${{ secrets.ACTION_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.HOSTNAME }}
-          
-              
-      - name: Docker Login
-        run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
-        
-      - name: Pull From Dockerhub
-        run: docker pull ${{secrets.DOCKER_USER}}/tserver
-        
-      - name: Stop Container
-        run: docker stop serverc
-      
-      - name: remove container
-        run: docker rm serverc
-        
-      - name: Run image in container
-        run: docker run --name serverc -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
+     - name: Pulling Dockerhub image and running on AWS EC2
+       uses: appleboy/ssh-action@master
+       with:
+        host: ${{ secrets.HOSTNAME }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.ACTION_PRIVATE_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
+          docker pull ${{secrets.DOCKER_USER}}/tserver
+          docker stop serverc
+          docker rm serverc
+          docker run --name serverc -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
             
           
         
