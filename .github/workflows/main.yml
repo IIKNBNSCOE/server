@@ -61,7 +61,9 @@ jobs:
         run: |
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
           docker pull ${{secrets.DOCKER_USER}}/tserver
-          docker run --name serverc1 -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
+          docker stop serverc
+          docker rm serverc
+          docker run --name serverc -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
             
           
         
