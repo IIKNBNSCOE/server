@@ -13,17 +13,17 @@ var login=(req,res)=>
         else{
             if(!doc)
             {
-                res.status(200).json({message:"User does not exists"})
+                res.status(200).json({message:"user does not exists"})
             }
             else
             {
            if(req.body.password === doc.password)
            {
-            const token=jwt.sign({id:doc._id},process.env.JWT_SECRET_KEY,{expiresIn:"60s"})
-            res.status(200).json({message:"Valid User",token:token});                   
+            const token=jwt.sign({id:doc._id},process.env.JWT_SECRET_KEY,{expiresIn:"3600s"})
+            res.status(200).json({message:"valid User",token:token});                   
            }
            else
-           res.status(401).json({message:"Invalid User, Password dont match"});
+           res.status(401).json({message:"invalid User, Password dont match"});
             }
         }
     })
