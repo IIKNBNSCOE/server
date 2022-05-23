@@ -33,17 +33,13 @@ jobs:
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
           docker push imrankazi90/tserver
       - name: DockerHub Pull and Run on AWS
-        with: 
-          host: ec2-18-132-40-163.eu-west-2.compute.amazonaws.com
-          username: ec2-user
-          key: ${{secrets.ACTION_PRIVATE_KEY}}
-          envs: GITHUB_SHA
-          run: |
-            docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
-            docker pull ${{secrets.DOCKER_USER}}/tserver
-            docker stop serverc1
-            docker rm serverc1
-            docker run --name serverc1 -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
+        run: |
+          ssh -i {{secrets.ACTION_PRIVATE_KEY}} ec2-user@ec2-18-132-40-163.eu-west-2.compute.amazonaws.com
+          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
+          docker pull ${{secrets.DOCKER_USER}}/tserver
+          docker stop serverc1
+          docker rm serverc1
+          docker run --name serverc1 -p 7000:7000 -d ${{secrets.DOCKER_USER}}/tserver
             
           
         
