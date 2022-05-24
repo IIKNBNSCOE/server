@@ -89,7 +89,7 @@ const updateticket=(req,res,next)=>
           }
           else{
               console.log(doc)
-              res.status(200).json({message:"Ticket is updated"})
+              res.status(200).json({message:"Ticket gets updated"})
           }
 
         })
