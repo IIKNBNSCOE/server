@@ -1,4 +1,4 @@
-const crypto = require("crypto")
+const crypto=require("crypto")
 const ticketmodel=require("../model/ticketmodel")
 const usermodel=require("../model/usermodel")
 /*** Get All Tickets */
@@ -108,7 +108,7 @@ const deleteticket=(req,res,next)=>
         ticketmodel.deleteOne({ticket_no:req.params.id},()=>
         {
            console.log(req.params.id)
-            res.json({message:"Ticket Deleted"})
+            res.json({message:"Ticket is Deleted"})
         })
     }
     else
