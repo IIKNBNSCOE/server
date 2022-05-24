@@ -31,7 +31,7 @@ jobs:
           docker build -t serverapp .
           docker tag serverapp imrankazi90/tserver
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_SECRET}}
-          docker push imrankazi90/tserver
+          docker push imrankazi90/tserver:latest
           
       
   Deploy:
